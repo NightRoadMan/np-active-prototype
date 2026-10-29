@@ -129,7 +129,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .rkv-in{display:flex;flex-direction:column;gap:12px;width:100%}
 
 /* карусель */
-.car{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:0 16px;width:375px;scroll-padding:0 16px;overscroll-behavior-x:contain}
+.car{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:0 16px;width:375px;scroll-padding:0 16px;overscroll-behavior-x:contain}
 .car::-webkit-scrollbar{display:none}
 .car>*{scroll-snap-align:start}
 .car .card{width:324px}
@@ -199,7 +199,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .more{display:flex;gap:8px;align-items:center;justify-content:center;height:56px;width:343px;border-radius:20px;font-weight:600;font-size:16px;line-height:16px;color:var(--c-tel)}
 .more img{width:24px;height:24px}
 
-.hcar{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px;overscroll-behavior-x:contain}
+.hcar{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px;overscroll-behavior-x:contain}
 .hcar::-webkit-scrollbar{display:none}
 .hcar>*{scroll-snap-align:start;flex:none}
 .mc{width:300px;border:1px solid var(--c-border);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:4px;background:#fff}
@@ -719,7 +719,14 @@ function bindCarousel(car, dots, startIdx, onChange){
   const pos = i => Math.min(items[i].offsetLeft - parseFloat(getComputedStyle(car).paddingLeft), car.scrollWidth - car.clientWidth);
   const setDot = i => btns.forEach((b,j)=>b.setAttribute("aria-current", j===i));
   const cur = () => { const x = car.scrollLeft; let best=0,bd=1e9; items.forEach((_,i)=>{const d=Math.abs(pos(i)-x); if(d<bd){bd=d;best=i}}); return best; };
-  car.addEventListener("scroll", () => { const i = cur(); setDot(i); if(car.id==="rkvCar") rkvIdx = i; if(onChange) onChange(i); }, {passive:true});
+  // точки обновляем сразу, а высоту и блок под каруселью — только когда свайп закончился,
+  // иначе на телефоне раскладка меняется посреди жеста и карточка дёргается
+  let touching = false, settleT;
+  const settle = () => { clearTimeout(settleT); if(onChange) settleT = setTimeout(() => { if(!touching) onChange(cur()); }, 120); };
+  car.addEventListener("scroll", () => { const i = cur(); setDot(i); if(car.id==="rkvCar") rkvIdx = i; settle(); }, {passive:true});
+  car.addEventListener("touchstart", () => { touching = true; clearTimeout(settleT); }, {passive:true});
+  car.addEventListener("touchend", () => { touching = false; settle(); }, {passive:true});
+  car.addEventListener("touchcancel", () => { touching = false; settle(); }, {passive:true});
   btns.forEach((b,i) => b.addEventListener("click", () => car.scrollTo({left:pos(i), behavior:"smooth"})));
   // перетаскивание мышью
   let down=false, sx=0, sl=0, moved=false;
