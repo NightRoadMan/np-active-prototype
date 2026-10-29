@@ -107,6 +107,9 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .t13{font-size:13px;line-height:18px;color:var(--c-soft)}
 .btn{display:flex;gap:8px;align-items:center;justify-content:center;height:44px;padding:10px 16px;border-radius:16px;background:var(--c-tel-bg);color:#fff;font-weight:600;font-size:16px;line-height:16px;width:100%;position:relative;z-index:1}
 .btn img{width:24px;height:24px}
+/* при активной консультации старт новых чатов заблокирован (Figma 72071:465659) */
+.btn.lock{background:#f3f5fc;color:#8592ba;cursor:default}
+.btn.lock:active{transform:none;filter:none}
 .btn-s{display:inline-flex;gap:8px;align-items:center;justify-content:center;padding:8px 12px;border-radius:12px;background:var(--c-tel-bg);color:#fff;font-weight:600;font-size:14px;line-height:16px}
 .btn-s img{width:16px;height:16px}
 .link-v{display:inline-flex;gap:8px;align-items:center;padding:8px 0;font-weight:600;font-size:14px;line-height:16px;color:var(--c-tel)}
@@ -673,6 +676,7 @@ function render(keepScroll){
       : sl[0][1];
     h += `<div id="carBelow"></div>`;
     $("#topContent").innerHTML = h;
+    lockBtns();
     const kinds = sl.map(x=>x[0]);
     const below = i => { const k = kinds[i]; $("#carBelow").innerHTML = k==="auto" ? upsellAuto() : k==="sub" ? (S.prem ? premHave() : premUpsell()) : ""; setKind(k); };
     below(carIdx);
@@ -700,10 +704,16 @@ function render(keepScroll){
     if(S.auto) h += autoCard() + upsellAuto();
   }
   $("#topContent").innerHTML = h;
+  lockBtns();
   if(S.rkv && S.n > 1 && !showSub) bindCarousel($("#rkvCar"), $("#rkvDots"), rkvIdx);
   syncPanel();
   updStick();
   if(!keepScroll) {/* no-op */}
+}
+
+function lockBtns(){
+  if(!S.act) return;
+  document.querySelectorAll("#topContent .btn").forEach(b => { b.classList.add("lock"); b.disabled = true; b.removeAttribute("data-toast"); b.textContent = "Идёт консультация"; });
 }
 
 /* ---------- липкая кнопка ---------- */
@@ -711,7 +721,7 @@ function updStick(){
   const sc = $("#scroller"), st = $("#stick");
   const btns = [...document.querySelectorAll("#topContent .btn")];
   const top = sc.getBoundingClientRect().top;
-  const on = !S.full && btns.length > 0 && btns.every(b => b.getBoundingClientRect().bottom < top);
+  const on = !S.full && !S.act && btns.length > 0 && btns.every(b => b.getBoundingClientRect().bottom < top);
   st.classList.toggle("on", on);
   st.tabIndex = on ? 0 : -1; st.setAttribute("aria-hidden", !on);
 }
