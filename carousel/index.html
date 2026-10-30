@@ -141,6 +141,10 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .car.cc{gap:16px;align-items:flex-start;transition:height .25s ease}
 .car.cc .card{width:343px}
 .slide{width:343px;flex:none;display:flex;flex-direction:column;gap:16px}
+/* подвариант: апселл сиреневой плашкой, заходящей под карточку (Figma 72410:185564, 72410:183417) */
+#buy.plain{background:#fff}
+.tuck .card{z-index:1}
+.tuck .upsell{position:relative;z-index:0;margin-top:-32px;padding:24px 16px 8px;border-radius:0 0 16px 16px;background:var(--c-tel-tint);gap:4px}
 .card.rkv2{padding:16px 0 0;gap:0}
 .rkv2-t{display:flex;flex-direction:column;gap:16px;padding:0 16px;width:100%}
 .rkv2-b{display:flex;flex-direction:column;gap:16px;padding:16px;width:100%}
@@ -376,6 +380,13 @@ button{font-family:inherit;cursor:pointer;color:inherit}
       <label class="opt"><input type="checkbox" id="o-drf"><span class="t">Черновики<small>Отдельный блок под покупками</small></span></label>
     </div>
 
+    <div class="grp" role="group" aria-labelledby="g5">
+      <div class="grp-h" id="g5">Апселл под автоподбором и подпиской</div>
+      <div class="row2">
+        <div class="seg" role="group" aria-label="Вид апселла"><button type="button" id="u-bg" aria-pressed="true">На фоне блока</button><button type="button" id="u-tuck" aria-pressed="false">Плашкой под карточкой</button></div>
+      </div>
+    </div>
+
     <div class="grp" role="group" aria-labelledby="g3">
       <div class="grp-h" id="g3">Вид</div>
       <div class="row2">
@@ -530,7 +541,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 /* ---------- состояние ---------- */
-const S = {rkv:true, n:2, auto:false, cons:false, sub:true, prem:false, tab:"sub", full:false, slow:false, act:false, drf:false, nopills:false};
+const S = {rkv:true, n:2, auto:false, cons:false, sub:true, prem:false, tab:"sub", full:false, slow:false, act:false, drf:false, nopills:false, tuck:false};
 const NO_STATES = {slow:false, act:false, drf:false, nopills:false};
 let activeFrame = null;
 
@@ -645,6 +656,7 @@ function setKind(k){
   $("#sympTitle").innerHTML = rkv ? "С чем помогают наши<br>врачи онлайн" : "С чем часто помогают наши<br>врачи онлайн";
   $("#sympLead").hidden = rkv;
   $("#buy").classList.toggle("auto", kk==="auto");
+  $("#buy").classList.toggle("plain", S.tuck && (kk==="auto" || kk==="sub"));
 }
 
 /* ---------- рендер верхнего блока ---------- */
@@ -677,6 +689,7 @@ function render(keepScroll){
   let h = multi ? `<div class="car cc" id="ccCar">${sl.map(x=>`<div class="slide">${x[1]}${under(x[0])}</div>`).join("")}</div>` : sl[0][1] + under(sl[0][0]);
   if(multi) h += `<div class="dots" id="ccDots">${sl.map((_,i)=>`<button aria-label="Карточка ${i+1}" aria-current="${i===carIdx}"></button>`).join("")}</div>`;
   $("#topContent").innerHTML = h;
+  $("#topContent").classList.toggle("tuck", S.tuck);
   lockBtns();
   const kinds = sl.map(x=>x[0]);
   setKind(kinds[carIdx]);
@@ -903,6 +916,12 @@ for(const k in sids){
 $("#rkv-dec").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); if(S.n>1){S.n--; rkvIdx=0; activeFrame=null; S.nopills=false; render();} });
 $("#rkv-inc").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); if(S.n<3){S.n++; activeFrame=null; S.nopills=false; render();} });
 
+
+function setUpsell(t){
+  S.tuck = t; $("#u-bg").setAttribute("aria-pressed", !t); $("#u-tuck").setAttribute("aria-pressed", t); render();
+}
+$("#u-bg").addEventListener("click", ()=>setUpsell(false));
+$("#u-tuck").addEventListener("click", ()=>setUpsell(true));
 
 function setView(full){
   S.full = full; $("#phone").classList.toggle("full", full); updStick();
