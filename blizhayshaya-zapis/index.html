@@ -80,24 +80,24 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 .screen > div { position: relative; }
 
 /* блок «Ближайшая запись» — значения из макета */
-.ph-light { --b-bg:#FFFFFF; --b-tx:#0D0D0D; --c-bg:#FFFFFF; --c-bd:#EAEBED; --chev:#929297; --dot:#D7D7D9; --star:#FFC63D;
+.ph-light { --b-bg:#FFFFFF; --b-tx:#0D0D0D; --c-bg:#FFFFFF; --c-bd:#EAEBED; --chev:#929297; --dot:#D7D7D9; --star:#FFC63D; --warn-bg:#FFEBEB;
   --tm-chip:#F2EBFF; --tm-chip-tx:#7D3BEE; --gr-chip:#F2FBF1; --gr-chip-tx:#6ABF68; --br-chip:#E6F4F6; --br-tx:#31858C; --br-line:#B8DCE2;
   --tb-fade:#F4F5F6; --tb-glass:rgba(244,245,246,.6); --tb-sel:#EDEDED; --tb-tx:#0D0D0D; --tb-act:#F3AA00; --tb-hl:rgba(255,255,255,.85); }
-.ph-dark { --b-bg:#1A1A1A; --b-tx:#FFFFFF; --c-bg:#272728; --c-bd:#3F4045; --chev:#7A7A7F; --dot:#5D5E63; --star:#F3AA00;
+.ph-dark { --b-bg:#1A1A1A; --b-tx:#FFFFFF; --c-bg:#272728; --c-bd:#3F4045; --chev:#7A7A7F; --dot:#5D5E63; --star:#F3AA00; --warn-bg:#4D2929;
   --tm-chip:#3D2860; --tm-chip-tx:#9A5FFD; --gr-chip:#355034; --gr-chip-tx:#81D37F; --br-chip:#213A3E; --br-tx:#61B7C6; --br-line:#2A6D76;
   --tb-fade:#1A1A1A; --tb-glass:rgba(93,94,99,.5); --tb-sel:rgba(26,26,26,.55); --tb-tx:#FFFFFF; --tb-act:#FFC63D; --tb-hl:rgba(255,255,255,.14); }
 
 .nb { width: 402.25px; background: var(--b-bg); border-radius: 16px; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 8px; overflow: clip;
   font-family: "Montserrat", system-ui, sans-serif; font-feature-settings: "liga" 0; -webkit-font-smoothing: antialiased; overflow-wrap: anywhere; }
 .nb-h { color: var(--b-tx); font-size: 16px; font-weight: 600; line-height: 20px; }
-.nb-row { display: flex; gap: 8px; align-items: flex-start; margin: -2px -16px 0; padding: 2px 16px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; }
+.nb-row { display: flex; gap: 8px; align-items: stretch; margin: -2px -16px 0; padding: 2px 16px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; }
 .nb-row::-webkit-scrollbar { display: none; }
 .nb-row > * { scroll-snap-align: start; }
 
 .cd { flex: none; background: var(--c-bg); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; overflow: clip; }
 .cd-tm { height: 196px; justify-content: space-between; outline: 1px solid var(--c-bd); outline-offset: -1px;
   box-shadow: #3F404524 0 0 2px, #3F40451F 0 12px 16px -6px; }
-.cd-off { width: 324px; gap: 16px; outline: .5px solid var(--c-bd); outline-offset: -.5px; box-shadow: #3F404524 0 0 2px, #3F40451F 0 6px 8px -4px; }
+.cd-off { width: 324px; gap: 16px; justify-content: space-between; outline: .5px solid var(--c-bd); outline-offset: -.5px; box-shadow: #3F404524 0 0 2px, #3F40451F 0 6px 8px -4px; }
 .nb.single .cd-tm { flex: 1 1 auto; width: auto; }
 .top { display: flex; flex-direction: column; gap: 8px; align-self: stretch; min-width: 0; }
 .chiprow { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -118,7 +118,13 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 .doc { display: flex; align-items: center; gap: 12px; align-self: stretch; min-width: 0; }
 .ava { flex: none; width: 52px; height: 52px; border-radius: 16px; background: var(--img-7J2CM9JDQ7VKYKMPWGC4Z8ZH25) 50% / cover; }
 .doc-i { display: flex; flex-direction: column; gap: 4px; flex: 1 1 0; min-width: 0; }
-.doc-n { color: var(--b-tx); font-size: 14px; font-weight: 500; line-height: 20px; }
+.doc-n { color: var(--b-tx); font-size: 14px; font-weight: 500; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tags { display: flex; gap: 4px; align-items: flex-start; align-self: stretch; overflow: hidden; }
+.tag { flex: none; padding: 2px 8px; border-radius: 16px; background: var(--tm-chip); color: var(--tm-chip-tx); font-size: 12px; font-weight: 600; line-height: 16px; white-space: nowrap; }
+.tag.plain { background: none; }
+.warn { align-self: stretch; padding: 8px; border-radius: 16px; background: var(--warn-bg); color: var(--b-tx); font-size: 13px; line-height: 18px; text-align: center; }
+.cd-tm.auto { height: auto; justify-content: flex-start; gap: 8px; }
+fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
 .doc-s { display: flex; align-items: center; gap: 4px; }
 .ic16 { flex: none; width: 16px; height: 16px; position: relative; }
 .ic16 .dt { position: absolute; left: 6px; top: 6px; width: 4px; height: 4px; }
@@ -167,6 +173,7 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
       <legend>Состояние</legend>
       <div class="radios" id="g-state">
         <div class="rb"><input type="radio" name="state" id="st-1" value="1" checked><label for="st-1"><span class="n">1</span>Пользователь начал чат, врач подбирается</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-1b" value="1b"><label for="st-1b"><span class="n">1б</span>Врач подбирается, но уже известно, кто подключится</label></div>
         <div class="rb"><input type="radio" name="state" id="st-2" value="2"><label for="st-2"><span class="n">2</span>Врач подключился (возврат в консультацию)</label></div>
         <div class="rb"><input type="radio" name="state" id="st-3" value="3"><label for="st-3"><span class="n">3</span>Начал чат и ждёт врача в определённый слот</label></div>
         <div class="rb"><input type="radio" name="state" id="st-4" value="4"><label for="st-4"><span class="n">4</span>Купил РКВ и не начал чат</label></div>
@@ -178,6 +185,14 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
       <div class="radios row" id="g-off">
         <div class="rb"><input type="radio" name="off" id="off-0" value="0"><label for="off-0">Только онлайн-консультация</label></div>
         <div class="rb"><input type="radio" name="off" id="off-1" value="1" checked><label for="off-1">Есть оффлайн-запись</label></div>
+      </div>
+    </fieldset>
+
+    <fieldset id="f-name">
+      <legend>Имя врача</legend>
+      <div class="radios row" id="g-name">
+        <div class="rb"><input type="radio" name="nm" id="nm-0" value="0" checked><label for="nm-0">Обычное</label></div>
+        <div class="rb"><input type="radio" name="nm" id="nm-1" value="1"><label for="nm-1">Длинное (обрезается)</label></div>
       </div>
     </fieldset>
 
@@ -1425,12 +1440,15 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
   var STATES = {
     "1": { node: "36536-56768", name: "Пользователь начал чат, врач подбирается",
       chip: ["tm", "Подключится через 40–50 минут"], title: "Онлайн-консультация дерматолога", body: "pick", cta: "Вернутся в чат", w: 324 },
+    "1b": { node: "36536-56726", name: "Карточка врача, когда знаем, кто подключится",
+      chip: ["tm", "Подключится через 40–50 минут"], title: "Онлайн-консультация дерматолога", body: "doc", cta: "Вернутся в чат", w: 324 },
     "2": { node: "36536-56770", name: "Врач подключился",
       chip: ["gr", "Идёт консультация"], title: "Онлайн-консультация", body: "doc", cta: "Вернутся в чат", w: 324 },
     "3": { node: "36536-59370", name: "Ждёт врача в слот",
       chip: ["tm", "18 июня, 14:00-15:00"], title: "Онлайн-консультация", body: "doc", cta: "Вернутся в чат", w: 324 },
     "4": { node: "36536-60847", name: "Купил РКВ, не начал чат",
-      chip: ["tm", "18 июня, 14:00-15:00"], title: "Онлайн-консультация", body: "doc", cta: "Пройдите опрос, чтобы начать", w: 327 }
+      chip: ["tm", "18 июня, 14:00-15:00"], title: "Онлайн-консультация", body: "doc", cta: "Пройдите опрос, чтобы начать", w: 327,
+      warn: "Чтобы врач подключился в выбранное время, пройдите опрос по здоровью" }
   };
 
   var CHEV = '<span class="chev"><svg viewBox="0 0 5 10" fill="none"><path d="M0 10L5 5L0 0" vector-effect="non-scaling-stroke" stroke="var(--chev)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
@@ -1441,14 +1459,16 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
   var IC_SRV = '<span class="ic"><span class="ic16"><svg viewBox="0 0 13.75 12.9" style="position:absolute;left:50%;top:calc(50% + .21px);translate:-50% -50%;width:13.75px;height:12.9px"><path d="M5.639 2.429L5.639 0.690C5.639 0.309 5.947 0.000 6.328 0.000C6.709 0.000 7.019 0.309 7.019 0.690L7.019 0.877C8.069 0.952 8.897 1.827 8.897 2.896L8.897 4.981C8.897 6.200 8.324 7.347 7.350 8.078L7.118 8.251C6.544 8.681 5.878 8.965 5.178 9.081C5.404 10.464 6.604 11.520 8.051 11.520C9.659 11.520 10.963 10.216 10.963 8.608L10.963 7.459C10.142 7.173 9.553 6.393 9.553 5.475C9.553 4.316 10.493 3.376 11.652 3.376C12.812 3.376 13.752 4.316 13.752 5.475C13.752 6.393 13.163 7.173 12.343 7.459L12.343 8.608C12.343 10.978 10.421 12.900 8.051 12.900C5.844 12.899 4.026 11.234 3.786 9.092C3.061 8.982 2.372 8.695 1.780 8.251L1.549 8.078C0.574 7.347 0.000 6.200 0.000 4.981L0.000 2.896C0.000 1.827 0.829 0.952 1.880 0.877L1.880 0.690C1.880 0.309 2.188 0.000 2.569 0.000C2.950 0.000 3.260 0.309 3.260 0.690L3.260 2.429C3.260 2.810 2.950 3.119 2.569 3.119C2.188 3.119 1.880 2.810 1.880 2.429L1.880 2.269C1.594 2.335 1.381 2.590 1.381 2.896L1.381 4.981C1.381 5.765 1.750 6.503 2.377 6.974L2.607 7.147C3.139 7.546 3.785 7.761 4.449 7.761C5.113 7.761 5.759 7.546 6.290 7.147L6.521 6.974C7.148 6.503 7.518 5.765 7.518 4.981L7.518 2.896C7.517 2.590 7.304 2.335 7.019 2.269L7.019 2.429C7.019 2.810 6.709 3.119 6.328 3.119C5.947 3.119 5.639 2.810 5.639 2.429ZM12.372 5.475C12.372 5.078 12.050 4.756 11.652 4.756C11.255 4.757 10.934 5.078 10.934 5.475C10.934 5.872 11.255 6.195 11.652 6.195C12.050 6.195 12.372 5.873 12.372 5.475Z" fill-rule="evenodd" fill="var(--br-tx)"/></svg></span></span>';
   var COIN = '<span class="coin"><span class="sep"></span><span class="val"><svg width="24" height="24" viewBox="0 0 24 24"><g transform="matrix(1 0 0 1 2 2)"><circle cx="10" cy="10" r="10" fill="#FFB700"/><circle cx="10" cy="10" r="10" vector-effect="non-scaling-stroke" fill="none" stroke="#FFEAA3" stroke-width="2"/></g><path transform="matrix(1 0 0 1 8 8)" d="M8 0L8 8L5.5 8L5.5 5L2.5 5L2.5 8L0 8L0 0L2.5 0L2.5 3L5.5 3L5.5 0L8 0Z" fill="#FFFFFF"/></svg><b>+100</b></span></span>';
 
-  function telemed(s) {
+  function telemed(s, longName) {
+    var name = longName ? "Константинова Канстанса Констаниновна" : "Тартина Анна Анатольевна";
     var body = s.body === "pick"
       ? '<div class="pick">' + SPIN + '<div class="t13">Подбираем подходящего врача...</div></div>'
-      : '<div class="doc"><div class="ava" role="img" aria-label="Фото врача"></div><div class="doc-i"><div class="doc-n">Тартина Анна Анатольевна</div>' +
-        '<div class="doc-s"><span class="t13">Дерматолог</span>' + DOT + '<span class="rate">' + STAR + '<span class="t13">4.9 (51)</span></span></div></div></div>';
-    return '<div class="cd cd-tm" style="width:' + s.w + 'px" data-go="Карточка консультации">' +
+      : '<div class="doc"><div class="ava" role="img" aria-label="Фото врача"></div><div class="doc-i"><div class="doc-n" title="' + name + '">' + name + '</div>' +
+        '<div class="tags"><span class="tag">Дерматовенеролог</span><span class="tag">Дерматовенеролог</span><span class="tag plain">Взрослый</span></div></div></div>';
+    var warn = s.warn ? '<div class="warn">' + s.warn + '</div>' : '';
+    return '<div class="cd cd-tm' + (s.warn ? ' auto' : '') + '" style="width:' + s.w + 'px" data-go="Карточка консультации">' +
       '<div class="top"><div class="chiprow"><div class="chip ' + s.chip[0] + '">' + s.chip[1] + '</div>' + CHEV + '</div>' +
-      '<div class="ttl">' + s.title + '</div></div>' + body +
+      '<div class="ttl">' + s.title + '</div></div>' + body + warn +
       '<button type="button" class="cta" data-go="' + (s.cta.indexOf("опрос") > -1 ? "Опрос по здоровью" : "Чат консультации") + '">' + s.cta + '</button></div>';
   }
   function offline() {
@@ -1458,13 +1478,13 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
       '<div class="offrow">' + IC_SRV + '<div class="t13">Прием невролога</div></div></div>' +
       '<button type="button" class="cta br" data-go="Повторная запись в клинику"><span class="grow">Записаться еще раз</span>' + COIN + '</button></div>';
   }
-  function block(s, withOff) {
+  function block(s, withOff, longName) {
     return '<div class="nb' + (withOff ? '' : ' single') + '"><div class="nb-h">Ближайшая запись</div>' +
-      '<div class="nb-row">' + telemed(s) + (withOff ? offline() : '') + '</div></div>';
+      '<div class="nb-row">' + telemed(s, longName) + (withOff ? offline() : '') + '</div></div>';
   }
 
-  var st = { state: "1", off: "1", ph: "light" };
-  try { var sv = JSON.parse(localStorage.getItem("np-blizh-fig") || "null"); if (sv && STATES[sv.state]) st = sv; } catch (e) {}
+  var st = { state: "1", off: "1", ph: "light", nm: "0" };
+  try { var sv = JSON.parse(localStorage.getItem("np-blizh-fig2") || "null"); if (sv && STATES[sv.state]) st = Object.assign(st, sv); } catch (e) {}
 
   var phone = document.getElementById("phone");
   var mounts = phone.querySelectorAll(".np-block-mount");
@@ -1472,17 +1492,20 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 
   function render() {
     var s = STATES[st.state];
-    var html = block(s, st.off === "1");
+    var html = block(s, st.off === "1", st.nm === "1" && s.body === "doc");
     mounts.forEach(function (m) { m.innerHTML = html; });
     phone.setAttribute("data-ph", st.ph);
     document.getElementById("st-" + st.state).checked = true;
     document.getElementById("off-" + st.off).checked = true;
     document.getElementById("ph-" + st.ph).checked = true;
+    document.getElementById("nm-" + st.nm).checked = true;
+    document.getElementById("f-name").disabled = s.body !== "doc";
     src.innerHTML = 'Макет: <a href="' + FIG + s.node + '" target="_blank" rel="noopener">' + s.name + ' в Figma</a>';
-    try { localStorage.setItem("np-blizh-fig", JSON.stringify(st)); } catch (e) {}
+    try { localStorage.setItem("np-blizh-fig2", JSON.stringify(st)); } catch (e) {}
   }
 
   document.getElementById("g-state").addEventListener("change", function (e) { st.state = e.target.value; render(); });
+  document.getElementById("g-name").addEventListener("change", function (e) { st.nm = e.target.value; render(); });
   document.getElementById("g-off").addEventListener("change", function (e) { st.off = e.target.value; render(); });
   document.getElementById("g-theme").addEventListener("change", function (e) { st.ph = e.target.value; render(); });
 
