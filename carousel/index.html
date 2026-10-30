@@ -656,7 +656,8 @@ function setKind(k){
   $("#sympTitle").innerHTML = rkv ? "С чем помогают наши<br>врачи онлайн" : "С чем часто помогают наши<br>врачи онлайн";
   $("#sympLead").hidden = rkv;
   $("#buy").classList.toggle("auto", kk==="auto");
-  $("#buy").classList.toggle("plain", S.tuck && (kk==="auto" || kk==="sub"));
+  // в варианте «плашкой под карточкой» у блока покупок нет градиента ни на одном слайде
+  $("#buy").classList.toggle("plain", S.tuck);
 }
 
 /* ---------- рендер верхнего блока ---------- */
@@ -712,7 +713,7 @@ function render(keepScroll){
 
 function lockBtns(){
   if(!S.act) return;
-  document.querySelectorAll("#topContent .btn").forEach(b => { b.classList.add("lock"); b.disabled = true; b.removeAttribute("data-toast"); b.textContent = "Идёт консультация"; });
+  document.querySelectorAll("#topContent .btn").forEach(b => { b.classList.add("lock"); b.disabled = true; b.removeAttribute("data-toast"); b.textContent = "Идёт другая консультация"; });
 }
 
 /* ---------- липкая кнопка ---------- */
