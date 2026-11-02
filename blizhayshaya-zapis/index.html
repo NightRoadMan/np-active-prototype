@@ -72,7 +72,7 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 .src a { color: var(--sel-ink); }
 
 /* телефон */
-.stage { width: 100%; max-width: 402px; justify-self: center; }
+.stage { width: 100%; max-width: 402px; justify-self: center; position: sticky; top: 16px; }
 .scaler { width: 402px; transform-origin: 0 0; }
 .phone { position: relative; border-radius: 40px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(13,13,13,.45), 0 0 0 1px rgba(13,13,13,.06); }
 .phone > .screen { display: none; }
@@ -81,10 +81,10 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 
 /* блок «Ближайшая запись» — значения из макета */
 .ph-light { --b-bg:#FFFFFF; --b-tx:#0D0D0D; --c-bg:#FFFFFF; --c-bd:#EAEBED; --chev:#929297; --dot:#D7D7D9; --star:#FFC63D; --warn-bg:#FFEBEB;
-  --tm-chip:#F2EBFF; --tm-chip-tx:#7D3BEE; --gr-chip:#F2FBF1; --gr-chip-tx:#6ABF68; --br-chip:#E6F4F6; --br-tx:#31858C; --br-line:#B8DCE2;
+  --tm-chip:#F2EBFF; --tm-chip-tx:#7D3BEE; --gr-chip:#F2FBF1; --gr-chip-tx:#6ABF68; --br-chip:#E6F4F6; --br-tx:#31858C; --br-line:#B8DCE2; --rd-chip:#FFEBEB; --rd-chip-tx:#E66161; --rd-dot:#E66161; --gy-chip:#F4F5F6; --gy-chip-tx:#5D5E63;
   --tb-fade:#F4F5F6; --tb-glass:rgba(244,245,246,.6); --tb-sel:#EDEDED; --tb-tx:#0D0D0D; --tb-act:#F3AA00; --tb-hl:rgba(255,255,255,.85); }
 .ph-dark { --b-bg:#1A1A1A; --b-tx:#FFFFFF; --c-bg:#272728; --c-bd:#3F4045; --chev:#7A7A7F; --dot:#5D5E63; --star:#F3AA00; --warn-bg:#4D2929;
-  --tm-chip:#3D2860; --tm-chip-tx:#9A5FFD; --gr-chip:#355034; --gr-chip-tx:#81D37F; --br-chip:#213A3E; --br-tx:#61B7C6; --br-line:#2A6D76;
+  --tm-chip:#3D2860; --tm-chip-tx:#9A5FFD; --gr-chip:#355034; --gr-chip-tx:#81D37F; --br-chip:#213A3E; --br-tx:#61B7C6; --br-line:#2A6D76; --rd-chip:#4D2929; --rd-chip-tx:#FF8585; --rd-dot:#E66161; --gy-chip:#3F4045; --gy-chip-tx:#B1B2B7;
   --tb-fade:#1A1A1A; --tb-glass:rgba(93,94,99,.5); --tb-sel:rgba(26,26,26,.55); --tb-tx:#FFFFFF; --tb-act:#FFC63D; --tb-hl:rgba(255,255,255,.14); }
 
 .nb { width: 402.25px; background: var(--b-bg); border-radius: 16px; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 8px; overflow: clip;
@@ -105,6 +105,11 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
   font-size: 13px; font-weight: 600; line-height: 16px; white-space: nowrap; }
 .chip.tm { background: var(--tm-chip); color: var(--tm-chip-tx); }
 .chip.gr { background: var(--gr-chip); color: var(--gr-chip-tx); }
+.chip.rd { background: var(--rd-chip); color: var(--rd-chip-tx); }
+.chip.gy { background: var(--gy-chip); color: var(--gy-chip-tx); }
+.cta-w { position: relative; align-self: stretch; display: flex; }
+.cta-w .cta { flex: 1 1 auto; }
+.badge { position: absolute; right: -3px; top: -12px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--rd-dot); color: #FFFFFF; font: 600 12px/22px "Montserrat", system-ui, sans-serif; text-align: center; box-sizing: border-box; }
 .chip.br { background: var(--br-chip); color: var(--br-tx); }
 .chev { flex: none; width: 24px; height: 24px; position: relative; }
 .chev svg { position: absolute; left: 41.6667%; top: 29.1667%; width: 5px; height: 10px; overflow: visible; }
@@ -175,11 +180,16 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
     <fieldset>
       <legend>Состояние</legend>
       <div class="radios" id="g-state">
-        <div class="rb"><input type="radio" name="state" id="st-1" value="1"><label for="st-1"><span class="n">1</span>Пользователь начал чат, врач подбирается</label></div>
-        <div class="rb"><input type="radio" name="state" id="st-1b" value="1b" checked><label for="st-1b"><span class="n">1б</span>Врач подбирается, но уже известно, кто подключится</label></div>
-        <div class="rb"><input type="radio" name="state" id="st-2" value="2"><label for="st-2"><span class="n">2</span>Врач подключился (возврат в консультацию)</label></div>
-        <div class="rb"><input type="radio" name="state" id="st-3" value="3"><label for="st-3"><span class="n">3</span>Начал чат и ждёт врача в определённый слот</label></div>
-        <div class="rb"><input type="radio" name="state" id="st-4" value="4"><label for="st-4"><span class="n">4</span>Купил РКВ и не начал чат</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-31" value="31"><label for="st-31"><span class="n">3.1</span>Начал чат, врач подбирается</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-32" value="32"><label for="st-32"><span class="n">3.2</span>Начал чат, проходит опрос</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-33" value="33" checked><label for="st-33"><span class="n">3.3</span>Врач подобран, ещё не подключился</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-33b" value="33b"><label for="st-33b"><span class="n">3.3</span>Врач подобран, подключится в выбранный слот</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-34" value="34"><label for="st-34"><span class="n">3.4</span>Активный чат с врачом</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-35" value="35"><label for="st-35"><span class="n">3.5</span>Купил РКВ, не начал чат: слот гарантирован или доступен</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-36" value="36"><label for="st-36"><span class="n">3.6</span>Купил РКВ, не начал чат: слот недоступен</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-37" value="37"><label for="st-37"><span class="n">3.7</span>Консультация завершена, медзаключение готовится</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-38" value="38"><label for="st-38"><span class="n">3.8</span>Консультация завершена, медзаключение готово</label></div>
+        <div class="rb"><input type="radio" name="state" id="st-39" value="39"><label for="st-39"><span class="n">3.9</span>Консультация завершена, медзаключение не нужно</label></div>
       </div>
     </fieldset>
 
@@ -1441,18 +1451,30 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
 <script>
 (function () {
   var FIG = "https://www.figma.com/design/3viM0kCK5z7ZCvvGvfYbsg/?node-id=";
+  var CHAT = "Чат консультации", HIST = "История переписки", POLL = "Опрос по здоровью";
   var STATES = {
-    "1": { node: "36536-56768", name: "Пользователь начал чат, врач подбирается",
-      chip: ["tm", "Подключится через 40–50 минут"], title: "Онлайн-консультация", body: "pick", cta: "Вернутся в чат", w: 324 },
-    "1b": { node: "36536-56726", name: "Карточка врача, когда знаем, кто подключится",
-      chip: ["tm", "Подключится через 40–50 минут"], title: "Онлайн-консультация", body: "doc", cta: "Вернутся в чат", w: 324 },
-    "2": { node: "36536-56770", name: "Врач подключился",
-      chip: ["gr", "Идёт консультация"], title: "Онлайн-консультация", body: "doc", cta: "Вернутся в чат", w: 324 },
-    "3": { node: "36536-59370", name: "Ждёт врача в слот",
-      chip: ["tm", "18 июня, 14:00-15:00"], title: "Онлайн-консультация", body: "doc", cta: "Вернутся в чат", w: 324 },
-    "4": { node: "36536-60847", name: "Купил РКВ, не начал чат",
-      chip: ["tm", "18 июня, 14:00-15:00"], title: "Онлайн-консультация", body: "doc", cta: "Пройдите опрос, чтобы начать", w: 327,
-      warn: "Чтобы врач подключился в выбранное время, пройдите опрос по здоровью" }
+    "31": { node: "36531-55656", name: "3.1 · Врач подбирается",
+      chip: ["tm", "Подключится через 40–50 минут"], body: "pick", cta: "Вернуться в чат", go: CHAT },
+    "32": { node: "36619-31572", name: "3.2 · Проходит опрос",
+      chip: ["tm", "Прохождение опроса"], body: "survey", cta: "Вернуться в чат", go: CHAT, badge: 1 },
+    "33": { node: "36536-56726", name: "3.3 · Врач подобран, ещё не подключился",
+      chip: ["tm", "Подключится через 40–50 минут"], body: "doc", cta: "Вернуться в чат", go: CHAT },
+    "33b": { node: "36536-59370", name: "3.3 · Подключение в выбранный слот",
+      chip: ["tm", "18 июня, 14:00-15:00"], body: "doc", cta: "Вернуться в чат", go: CHAT },
+    "34": { node: "36531-56551", name: "3.4 · Активный чат с врачом",
+      chip: ["gr", "Идёт консультация"], body: "doc", cta: "Вернуться в чат (2)", go: CHAT },
+    "35": { node: "36536-60847", name: "3.5 · РКВ, слот гарантирован или доступен",
+      chip: ["tm", "31 октября, 18:00-19:00"], body: "doc", cta: "Пройдите опрос, чтобы начать", go: POLL, w: 327,
+      warn: "Чтобы врач подключился в\u00A0выбранное время, пройдите опрос по\u00A0здоровью" },
+    "36": { node: "36629-2380", name: "3.6 · РКВ, слот недоступен",
+      chip: ["rd", "На смене завтра с 08:00"], body: "doc", cta: "Пройдите опрос, чтобы начать", go: POLL,
+      warn: "Начните опрос и\u00A0выберите новое удобное время подключения врача" },
+    "37": { node: "36619-31424", name: "3.7 · Медзаключение готовится",
+      chip: ["gr", "Медзаключение готовится"], body: "doc", cta: "Вернуться в историю переписки", go: HIST },
+    "38": { node: "36619-31404", name: "3.8 · Медзаключение готово",
+      chip: ["gy", "Консультация завершена"], body: "doc", cta: "Посмотреть медзаключение", go: "Медзаключение" },
+    "39": { node: "36619-31472", name: "3.9 · Медзаключение не нужно",
+      chip: ["gy", "Консультация завершена"], body: "doc", cta: "Вернуться в историю переписки", go: HIST }
   };
 
   var CHEV = '<span class="chev"><svg viewBox="0 0 5 10" fill="none"><path d="M0 10L5 5L0 0" vector-effect="non-scaling-stroke" stroke="var(--chev)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
@@ -1469,13 +1491,16 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
         '<span class="t13">Дерматолог, Дерматовенеролог, Трихолог, Косметолог</span></div></div>';
     var body = s.body === "pick"
       ? '<div class="pick">' + SPIN + '<div class="t13">Подбираем подходящего врача...</div></div>'
+      : s.body === "survey"
+      ? '<div class="pick"><div class="t13">Врач подключится после завершения опроса</div></div>'
       : '<div class="doc"><div class="ava" role="img" aria-label="Фото врача"></div><div class="doc-i"><div class="doc-n" title="' + name + '">' + name + '</div>' +
         subRow + '</div></div>';
     var warn = s.warn ? '<div class="warn">' + s.warn + '</div>' : '';
-    return '<div class="cd cd-tm' + (s.warn ? ' auto' : '') + '" style="width:' + s.w + 'px" data-go="Карточка консультации">' +
+    var badge = s.badge ? '<span class="badge" aria-label="Непрочитанных: ' + s.badge + '">' + s.badge + '</span>' : '';
+    return '<div class="cd cd-tm' + (s.warn ? ' auto' : '') + '" style="width:' + (s.w || 324) + 'px" data-go="' + s.go + '">' +
       '<div class="top"><div class="chiprow"><div class="chip ' + s.chip[0] + '">' + s.chip[1] + '</div>' + CHEV + '</div>' +
-      '<div class="ttl">' + s.title + '</div></div>' + body + warn +
-      '<button type="button" class="cta" data-go="' + (s.cta.indexOf("опрос") > -1 ? "Опрос по здоровью" : "Чат консультации") + '">' + s.cta + '</button></div>';
+      '<div class="ttl">Онлайн-консультация</div></div>' + body + warn +
+      '<div class="cta-w"><button type="button" class="cta" data-go="' + s.go + '">' + s.cta + '</button>' + badge + '</div></div>';
   }
   function offline() {
     return '<div class="cd cd-off" data-go="Детали записи в клинику"><div class="top"><div class="chiprow"><div class="chip br">25 ноября 2026, 11:00</div>' + CHEV + '</div>' +
@@ -1489,8 +1514,8 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
       '<div class="nb-row">' + telemed(s, longName) + (withOff ? offline() : '') + '</div></div>';
   }
 
-  var st = { state: "1b", off: "1", ph: "light", nm: "0" };
-  try { var sv = JSON.parse(localStorage.getItem("np-blizh-fig3") || "null"); if (sv && STATES[sv.state]) st = Object.assign(st, sv); } catch (e) {}
+  var st = { state: "33", off: "1", ph: "light", nm: "0" };
+  try { var sv = JSON.parse(localStorage.getItem("np-blizh-final") || "null"); if (sv && STATES[sv.state]) st = Object.assign(st, sv); } catch (e) {}
 
   var phone = document.getElementById("phone");
   var mounts = phone.querySelectorAll(".np-block-mount");
@@ -1507,7 +1532,7 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
     document.getElementById("nm-" + st.nm).checked = true;
     document.getElementById("f-name").disabled = s.body !== "doc";
     src.innerHTML = 'Макет: <a href="' + FIG + s.node + '" target="_blank" rel="noopener">' + s.name + ' в Figma</a>';
-    try { localStorage.setItem("np-blizh-fig3", JSON.stringify(st)); } catch (e) {}
+    try { localStorage.setItem("np-blizh-final", JSON.stringify(st)); } catch (e) {}
   }
 
   document.getElementById("g-state").addEventListener("change", function (e) { st.state = e.target.value; render(); });
