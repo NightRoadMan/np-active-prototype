@@ -81,10 +81,10 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 
 /* блок «Ближайшая запись» — значения из макета */
 .ph-light { --b-bg:#FFFFFF; --b-tx:#0D0D0D; --c-bg:#FFFFFF; --c-bd:#EAEBED; --chev:#929297; --dot:#D7D7D9; --star:#FFC63D; --warn-bg:#FFEBEB;
-  --tm-chip:#F2EBFF; --tm-chip-tx:#7D3BEE; --gr-chip:#F2FBF1; --gr-chip-tx:#6ABF68; --br-chip:#E6F4F6; --br-tx:#31858C; --br-line:#B8DCE2; --rd-chip:#FFEBEB; --rd-chip-tx:#E66161; --rd-dot:#E66161; --gy-chip:#F4F5F6; --gy-chip-tx:#5D5E63;
+  --tm-chip:#F2EBFF; --tm-chip-tx:#7D3BEE; --gr-chip:#F2FBF1; --gr-chip-tx:#6ABF68; --br-chip:#E6F4F6; --br-tx:#31858C; --br-line:#B8DCE2; --rd-chip:#FFEBEB; --rd-chip-tx:#E66161; --rd-dot:#FF7777; --gy-chip:#F4F5F6; --gy-chip-tx:#5D5E63;
   --tb-fade:#F4F5F6; --tb-glass:rgba(244,245,246,.6); --tb-sel:#EDEDED; --tb-tx:#0D0D0D; --tb-act:#F3AA00; --tb-hl:rgba(255,255,255,.85); }
 .ph-dark { --b-bg:#1A1A1A; --b-tx:#FFFFFF; --c-bg:#272728; --c-bd:#3F4045; --chev:#7A7A7F; --dot:#5D5E63; --star:#F3AA00; --warn-bg:#4D2929;
-  --tm-chip:#3D2860; --tm-chip-tx:#9A5FFD; --gr-chip:#355034; --gr-chip-tx:#81D37F; --br-chip:#213A3E; --br-tx:#61B7C6; --br-line:#2A6D76; --rd-chip:#4D2929; --rd-chip-tx:#FF8585; --rd-dot:#E66161; --gy-chip:#3F4045; --gy-chip-tx:#B1B2B7;
+  --tm-chip:#3D2860; --tm-chip-tx:#9A5FFD; --gr-chip:#355034; --gr-chip-tx:#81D37F; --br-chip:#213A3E; --br-tx:#61B7C6; --br-line:#2A6D76; --rd-chip:#4D2929; --rd-chip-tx:#FF8585; --rd-dot:#FF7777; --gy-chip:#3F4045; --gy-chip-tx:#B1B2B7;
   --tb-fade:#1A1A1A; --tb-glass:rgba(93,94,99,.5); --tb-sel:rgba(26,26,26,.55); --tb-tx:#FFFFFF; --tb-act:#FFC63D; --tb-hl:rgba(255,255,255,.14); }
 
 .nb { width: 402.25px; background: var(--b-bg); border-radius: 16px; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 8px; overflow: clip;
@@ -109,7 +109,7 @@ legend { padding: 0; margin-bottom: 10px; font-size: 12px; line-height: 16px; fo
 .chip.gy { background: var(--gy-chip); color: var(--gy-chip-tx); }
 .cta-w { position: relative; align-self: stretch; display: flex; }
 .cta-w .cta { flex: 1 1 auto; }
-.badge { position: absolute; right: -3px; top: -12px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--rd-dot); color: #FFFFFF; font: 600 12px/22px "Montserrat", system-ui, sans-serif; text-align: center; box-sizing: border-box; }
+.badge { position: absolute; right: -8px; top: -8px; box-sizing: border-box; min-width: 26px; display: flex; align-items: center; justify-content: center; padding: 4px 7px; border-radius: 300px; background: var(--rd-dot); border: 1px solid var(--c-bg); color: #FFFFFF; font: 600 16px/16px "Montserrat", system-ui, sans-serif; font-feature-settings: "liga" 0; white-space: nowrap; }
 .chip.br { background: var(--br-chip); color: var(--br-tx); }
 .chev { flex: none; width: 24px; height: 24px; position: relative; }
 .chev svg { position: absolute; left: 41.6667%; top: 29.1667%; width: 5px; height: 10px; overflow: visible; }
@@ -1461,8 +1461,8 @@ fieldset:disabled .rb label { opacity: .45; cursor: not-allowed; }
       chip: ["tm", "Подключится через 40–50 минут"], body: "doc", cta: "Вернуться в чат", go: CHAT },
     "33b": { node: "36536-59370", name: "3.3 · Подключение в выбранный слот",
       chip: ["tm", "18 июня, 14:00-15:00"], body: "doc", cta: "Вернуться в чат", go: CHAT },
-    "34": { node: "36531-56551", name: "3.4 · Активный чат с врачом",
-      chip: ["gr", "Идёт консультация"], body: "doc", cta: "Вернуться в чат (2)", go: CHAT },
+    "34": { node: "36639-43676", name: "3.4 · Активный чат с врачом",
+      chip: ["gr", "Идёт консультация"], body: "doc", cta: "Вернуться в чат", go: CHAT, badge: 16 },
     "35": { node: "36536-60847", name: "3.5 · РКВ, слот гарантирован или доступен",
       chip: ["tm", "31 октября, 18:00-19:00"], body: "doc", cta: "Пройдите опрос, чтобы начать", go: POLL, w: 327,
       warn: "Чтобы врач подключился в\u00A0выбранное время, пройдите опрос по\u00A0здоровью" },
