@@ -170,6 +170,12 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pf{display:flex;flex-direction:column;gap:4px;width:100%;position:relative;z-index:1}
 .pf div{display:flex;gap:8px;align-items:center;font-weight:500;font-size:13px;line-height:18px;color:var(--c-gray700)}
 .pf img{width:20px;height:20px;flex:none}
+.pf div,.ben.ol div{align-items:flex-start}
+.pf div img,.ben.ol div img{margin-top:-1px}
+.ben.ol div{color:var(--c-base)}
+.ben.ol img{width:20px;height:20px}
+#ccDots button{background:var(--c-tel-bg);opacity:.3}
+#ccDots button[aria-current="true"]{opacity:1}
 .art{position:absolute;pointer-events:none;z-index:2;display:flex;align-items:center;justify-content:center}
 .art img{object-fit:cover}
 .prm{display:flex;flex-direction:column;gap:16px;width:100%}
@@ -383,13 +389,6 @@ button{font-family:inherit;cursor:pointer;color:inherit}
       <label class="opt"><input type="checkbox" id="o-drf"><span class="t">Черновики<small>Отдельный блок под покупками</small></span></label>
     </div>
 
-    <div class="grp" role="group" aria-labelledby="g5">
-      <div class="grp-h" id="g5">Апселл под автоподбором и подпиской</div>
-      <div class="row2">
-        <div class="seg" role="group" aria-label="Вид апселла"><button type="button" id="u-bg" aria-pressed="true">На фоне блока</button><button type="button" id="u-tuck" aria-pressed="false">Плашкой под карточкой</button></div>
-      </div>
-    </div>
-
     <div class="grp" role="group" aria-labelledby="g3">
       <div class="grp-h" id="g3">Вид</div>
       <div class="row2">
@@ -544,7 +543,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 /* ---------- состояние ---------- */
-const S = {rkv:true, n:2, auto:false, cons:false, sub:true, prem:false, tab:"sub", full:false, slow:false, act:false, drf:false, nopills:false, tuck:false};
+const S = {rkv:true, n:2, auto:false, cons:false, sub:true, prem:false, tab:"sub", full:false, slow:false, act:false, drf:false, nopills:false, tuck:true};
 const NO_STATES = {slow:false, act:false, drf:false, nopills:false};
 let activeFrame = null;
 
@@ -610,17 +609,17 @@ function subCard(prem){
   if(prem) return `<div class="card">
     <div class="paid prem"><img src="${A.crown16p}" alt="">Премиум подписка активна</div>
     <div class="c-body" style="gap:4px">
-      <div class="h18">Безлимитные<br>консультации</div>
-      <div class="ttl-prem">на 1 месяц c <span class="crown"><img src="${A.crown20}" alt="">Премиум</span></div>
+      <div class="h18">Безлимитные<br>консультации<br>на 1 месяц с Премиум</div>
       <p class="t13">${tx}</p>
     </div>
     <div class="pf"><p class="t13m">Премиум функции:</p>
       <div><img src="${A.pfFlash}" alt="">Выбор врача перед консультацией</div>
-      <div><img src="${A.pfDoctor}" alt="">Ответы от врачей в 2 раза быстрее</div>
+      <div><img src="${A.pfDoctor}" alt="">Выбор времени подключения врача,<br>если он не на смене</div>
       <div><img src="${A.pfHistory}" alt="">Возобновление чата с тем же врачом</div>
+      <div><img src="${A.pfHistory}" alt="">Дополнительные 5 быстрых чатов</div>
     </div>
     <button class="btn tap" data-toast="Откроется чат по подписке с Премиумом"><img src="${A.chat20}" alt="">Начать консультацию</button>
-    <div class="prem-art"><img src="${A.crownArt}" alt=""></div>
+    <div class="sub-art"><div><img src="${A.stetho}" alt=""></div></div>
   </div>`;
   return `<div class="card">
     <div class="c-body">
@@ -638,8 +637,8 @@ function premUpsell(){
   return `<div class="upsell">
     <div class="prm-h"><div class="t16s">Выбирайте, кто будет вашим</div><div class="t16s" style="display:flex;gap:4px">врачом с <span class="crown"><img src="${A.crown20}" alt="">Премиум</span></div>
       <p class="t13m">А еще с премиум:</p></div>
-    <div class="ben"><div><img src="${A.tlFast}" alt="">Ответы от врачей в 2 раза быстрее</div><div><img src="${A.tlFav}" alt="">Консультации с любимыми врачами</div><div><img src="${A.tlChat}" alt="">Возобновление чата с тем же врачом</div></div>
-    <button class="link-v tap" id="buyPrem" data-toast="Откроется подключение Премиума">Подключить Премиум<img src="${A.arrowV}" alt=""></button>
+    <div class="ben ol"><div><img src="${A.pfDoctor}" alt="">Ответы от врачей в 2 раза быстрее</div><div><img src="${A.pfFlash}" alt="">Выбор времени консультации,<br>если врач не на смене</div><div><img src="${A.pfHistory}" alt="">Возобновление чата с тем же врачом</div><div><img src="${A.pfHistory}" alt="">Дополнительные 5 чатов без замедления</div></div>
+    <button class="link-v tap" id="buyPrem" data-toast="Откроется подключение Премиума">Подключить Премиум за 990₽/мес<img src="${A.arrowV}" alt=""></button>
   </div>`;
 }
 
@@ -921,12 +920,6 @@ for(const k in sids){
 $("#rkv-dec").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); if(S.n>1){S.n--; rkvIdx=0; activeFrame=null; S.nopills=false; render();} });
 $("#rkv-inc").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); if(S.n<3){S.n++; activeFrame=null; S.nopills=false; render();} });
 
-
-function setUpsell(t){
-  S.tuck = t; $("#u-bg").setAttribute("aria-pressed", !t); $("#u-tuck").setAttribute("aria-pressed", t); render();
-}
-$("#u-bg").addEventListener("click", ()=>setUpsell(false));
-$("#u-tuck").addEventListener("click", ()=>setUpsell(true));
 
 function setView(full){
   S.full = full; $("#phone").classList.toggle("full", full); updStick();
