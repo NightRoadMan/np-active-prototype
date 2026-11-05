@@ -395,7 +395,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
     <div class="grp" role="group" aria-labelledby="g4">
       <div class="grp-h" id="g4">Состояния экрана</div>
       <label class="opt"><input type="checkbox" id="o-slow"><span class="t">Баннер про торможение<small>В шапке</small></span></label>
-      <label class="opt"><input type="checkbox" id="o-act"><span class="t">Активная консультация<small>Отдельный блок над покупками</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-act"><span class="t">Активная консультация<small>Блок над покупками. РКВ с этим врачом уже использована, её карточки нет</small></span></label>
       <label class="opt"><input type="checkbox" id="o-drf"><span class="t">Черновики<small>Отдельный блок под покупками</small></span></label>
     </div>
 
@@ -565,6 +565,9 @@ const DOCS = [
   {name:"Саймовская Инна Владимировна", pics:["picA","picB"], tags:[["Дерматолог",1],["Взрослый",0]], pred:"g", predText:"Ответит через 15-30 мин"}
 ];
 
+// РКВ с врачом из блока «Активная консультация» уже использована: её карточку не показываем (ТЗ)
+const ACTIVE_DOC = "Саймовская Инна Владимировна";
+const rkvLeft = () => S.rkv ? DOCS.slice(0,S.n).filter(d => !(S.act && d.name === ACTIVE_DOC)) : [];
 function rkvCard(d, w, red){
   const pics = d.pics.map(k => `<img src="${A[k]}" alt="">`).join("");
   const tags = d.tags.map(([t,f]) => `<span class="dtag${f?" f":""}">${esc(t)}</span>`).join("");
@@ -659,7 +662,7 @@ function arStrip(){
 
 /* ---------- тексты витрин специальностей и заболеваний: по продукту с наивысшим приоритетом (ТЗ) ---------- */
 // подписка (с Премиумом или без) → РКВ → РК с автоподбором → консилиум; от открытого слайда карусели не зависят
-function showcaseKind(){ return S.sub ? "sub" : S.rkv ? "rkv" : S.auto ? "auto" : S.cons ? "cons" : "sub"; }
+function showcaseKind(){ return S.sub ? "sub" : rkvLeft().length ? "rkv" : S.auto ? "auto" : S.cons ? "cons" : "sub"; }
 const SPEC_LEAD = {
   auto:"Вы подключили тариф с автоподбором врача. Если хотите выбрать доктора сами, можно доплатить.",
   sub:"Вы подключили тариф с автоподбором врача. Выбор конкретного доктора доступен только с Премиум.",
@@ -696,11 +699,11 @@ function render(keepScroll){
   // все покупки в одной карусели: консилиум → РКВ → автоподбор или подписка
   const sl = [];
   if(S.cons) sl.push(["cons", consCard(true)]);
-  if(S.rkv) DOCS.slice(0,S.n).forEach(d => sl.push(["rkv", rkvCard(d, 343)]));
+  rkvLeft().forEach(d => sl.push(["rkv", rkvCard(d, 343)]));
   if(S.auto) sl.push(["auto", autoCard()]);
   if(S.sub) sl.push(["sub", subCard(S.prem)]);
   if(!sl.length){
-    $("#topContent").innerHTML = `<div class="empty">Нет активных покупок. Такого состояния в макетах нет: отметьте покупку в панели слева.</div>`;
+    $("#topContent").innerHTML = S.rkv && S.act ? `<div class="empty">Единственная РКВ уже используется в активной консультации, других покупок нет. Добавьте РКВ или другую покупку в панели слева.</div>` : `<div class="empty">Нет активных покупок. Такого состояния в макетах нет: отметьте покупку в панели слева.</div>`;
     setKind(showcaseKind()); syncPanel(); updStick(); return;
   }
   carIdx = Math.min(carIdx, sl.length-1);
@@ -745,7 +748,7 @@ function updStick(){
   const on = !S.full && !S.act && btns.length > 0 && btns.every(b => b.getBoundingClientRect().bottom < top);
   st.classList.toggle("on", on);
   // подписка + РК считается одним вариантом: РК списывается первой
-  const ways = (S.cons?1:0) + (S.rkv?S.n:0) + (S.auto && !S.sub ? 1 : 0) + (S.sub?1:0);
+  const ways = (S.cons?1:0) + rkvLeft().length + (S.auto && !S.sub ? 1 : 0) + (S.sub?1:0);
   st.dataset.toast = ways > 1 ? "Откроется выбор: какую покупку использовать для консультации" : "Откроется новый чат с врачом";
   st.tabIndex = on ? 0 : -1; st.setAttribute("aria-hidden", !on);
 }
@@ -919,7 +922,7 @@ function syncPanel(){
   if(S.sub) parts.push(S.prem ? "подписка с Премиумом" : "подписка");
   $("#cap").textContent = activeFrame ? `Фрейм Figma ${activeFrame.replace("-",":")}` : (parts.length ? "Сборка: " + parts.join(" + ") : "Нет покупок");
   const hasOnce = S.rkv||S.auto||S.cons;
-  const nCards = (S.rkv ? S.n : 0) + [S.auto,S.cons,S.sub].filter(Boolean).length;
+  const nCards = rkvLeft().length + [S.auto,S.cons,S.sub].filter(Boolean).length;
   $("#rule-note").textContent = (nCards > 1
     ? "Все покупки в одной карусели. Текст под карточкой листается вместе с ней, а тексты витрин берутся по приоритету: подписка → РКВ → РК с автоподбором → консилиум, от открытого слайда не зависят."
     : (hasOnce || S.sub ? "Одна покупка: карточка без карусели." : ""))
