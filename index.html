@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>НП+ Active: карусель</title>
+</head>
+<body>
+<div class="wrap">
+  <button type="button" class="panel-btn" id="panelBtn" aria-label="Настройки прототипа" aria-controls="panel" aria-expanded="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 5h9M15 5h2M3 10h3M9 10h8M3 15h7M13 15h4"/><circle cx="13.5" cy="5" r="1.5"/><circle cx="7.5" cy="10" r="1.5"/><circle cx="11.5" cy="15" r="1.5"/></svg></button>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="panel" id="panel" aria-label="Сборка экрана">
+    <button type="button" class="panel-x" id="panelClose" aria-label="Закрыть настройки">×</button>
+    <div>
+      <h1>НП+ Active, версия с каруселью</h1>
+      <p class="lead">Отметьте, что купил пользователь, и экран соберётся по правилам из Figma. Если куплено больше одного продукта, все покупки собираются в одну карусель без вкладок. Состояния экрана включаются отдельно и сочетаются с любыми покупками. Карусели листаются свайпом, колёсиком с Shift и точками.</p>
+    </div>
+
+    <div class="grp" role="group" aria-labelledby="g1">
+      <div class="grp-h" id="g1">Покупки пользователя</div>
+      <label class="opt"><input type="checkbox" id="o-sub"><span class="t">Подписка на 1 месяц<small>Автоподбор врача</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-prem"><span class="t">Премиум<small>Подключается к подписке</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-auto"><span class="t">Разовые автоматические<small id="auto-sm">Врача подбираем мы</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-rkv"><span class="t">Разовые РКВ<small>Консультация с выбранным врачом</small></span>
+        <span class="step" onclick="event.preventDefault()"><button type="button" id="rkv-dec" aria-label="Меньше РКВ">−</button><output id="rkv-n">2</output><button type="button" id="rkv-inc" aria-label="Больше РКВ">+</button></span></label>
+      <label class="opt"><input type="checkbox" id="o-cons"><span class="t">Консилиум</span></label>
+    </div>
+
+
+    <div class="grp" role="group" aria-labelledby="g4">
+      <div class="grp-h" id="g4">Состояния экрана</div>
+      <label class="opt"><input type="checkbox" id="o-slow"><span class="t">Баннер про торможение<small>В шапке</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-act"><span class="t">Активная консультация<small>Блок над покупками. РКВ с этим врачом уже использована, её карточки нет</small></span></label>
+      <label class="opt"><input type="checkbox" id="o-drf"><span class="t">Черновики<small>Отдельный блок под покупками</small></span></label>
+    </div>
+
+    <div class="grp" role="group" aria-labelledby="g3" id="viewGrp">
+      <div class="grp-h" id="g3">Вид</div>
+      <div class="row2">
+        <div class="seg" role="group" aria-label="Высота экрана"><button type="button" id="v-phone" aria-pressed="true">Экран 812</button><button type="button" id="v-full" aria-pressed="false">Вся страница</button></div>
+      </div>
+      <p class="note" id="rule-note"></p>
+    </div>
+  </aside>
+
+  <div class="stage">
+    <div class="phone-scale"><div class="phone" id="phone">
+      <div class="screen">
+        <div class="scroller" id="scroller">
+          <div class="app" id="app">
+            <section class="top" id="top">
+              <div class="sbar" aria-hidden="true"><img class="notch" src="img/notch.webp" alt=""><img class="rs" src="img/status_right.webp" alt=""><span class="time">10:10</span></div>
+              <div class="h22">Онлайн-консультации<br>с врачами НаПоправку</div>
+              <div class="pills" id="pills"></div>
+              <div class="slow" id="slow" hidden><img src="img/info_filled.svg" alt=""><div class="slow-t"><b>До 31 дек 2026 время ожидания врача будет увеличено</b><span>За 30-дневный период вы сделали 7 консультаций</span><button class="btn-gr tap" data-toast="Откроется объяснение, почему ожидание дольше">Подробнее</button></div></div>
+            </section>
+
+            <section class="blk" id="active" hidden>
+              <p class="h22">Активная консультация</p>
+              <div class="acc">
+                <span class="acc-h">Жалобы по здоровью</span>
+                <span class="acc-c"><span class="apic"><img src="img/pic_a.webp" alt=""><img src="img/pic_b.webp" alt=""></span><span class="acc-n"><b>Саймовская Инна Владимировна</b><span class="acc-s">Терапевт<img src="img/dot4.webp" alt=""><img src="img/star16.webp" alt="">4.9 (16)</span></span></span>
+                <button class="btn tap" data-toast="Откроется чат: Жалобы по здоровью">Вернуться в чат</button>
+              </div>
+            </section>
+
+            <section class="buy" id="buy">
+              <div class="tabs" id="tabs" role="tablist" aria-label="Покупки"></div>
+              <div class="stack" id="topContent"></div>
+            </section>
+
+            <section class="blk" id="drafts" hidden>
+              <div class="h22row"><p class="h">Черновики<em>2</em></p><img src="img/chev24t.webp" alt=""></div>
+              <div class="hcar" id="drfCar"></div>
+              <div class="dots y" id="drfDots"></div>
+            </section>
+
+            <section class="blk">
+              <div class="h22row"><p class="h">История обращений<em>16</em></p><img src="img/chev24t.webp" alt=""></div>
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="hcar" id="hist"></div>
+                <div class="dots" id="histDots"></div>
+              </div>
+            </section>
+
+            <section class="blk pad20">
+              <div class="promo">
+                <div class="tx"><b>Получайте заключения врачей<br>на электронную почту</b><span>Укажите email, на который хотите<br>получать заключения врачей после консультаций в формате pdf</span></div>
+                <button class="lk tap" data-toast="Откроется ввод email">Указать email</button>
+                <div class="ill"><img src="img/mail92.webp" alt="" style="inset:0;width:100%;height:100%"></div>
+              </div>
+            </section>
+
+            <section class="blk" id="spec">
+              <div style="display:flex;flex-direction:column;gap:8px"><p class="h22" id="specTitle">Вам доступны<br>25 специальностей</p><p class="lead14" id="specLead">Выбор конкретного врача доступен только с Премиумом. Без него мы подберем врача в чате.</p></div>
+              <div class="tabs" style="height:auto" data-chips><button class="chip tap" aria-pressed="true"><img src="img/patient16.webp" alt="">Взрослым</button><button class="chip tap" aria-pressed="false"><img src="img/kid16.webp" alt="">Детям</button></div>
+              <div class="grid4" id="specGrid"></div>
+              <button class="more tap" data-toast="Откроется список всех специальностей">Посмотреть все<img src="img/chev24v.webp" alt=""></button>
+            </section>
+
+            <section class="blk">
+              <div class="h22row"><p class="h">Медкарты и дневники<em>2</em></p><img src="img/chev24t.webp" alt=""></div>
+              <div class="hcar" id="medcards">
+                <div class="mc">
+                  <div class="pat"><div class="pat-l"><div class="ava"><img src="img/avatar1.webp" alt="" style="inset:0;width:100%;height:100%"></div><div class="pat-n"><b>Валентина</b><span>28 лет</span></div></div><img class="chev" src="img/chev24b.webp" alt=""></div>
+                  <div class="li"><div class="li-r"><span class="ic"><img src="img/diary24.webp" alt="" style="top:-8.33%;left:0;width:125%;height:108.33%"></span><span class="li-t">Дневники</span><img class="chev" src="img/chev24c.webp" alt=""></div><div class="li-d"></div></div>
+                  <div class="mchips"><button class="mchip tap"><img src="img/plus16.webp" alt="">Питание</button><button class="mchip tap"><img src="img/plus16.webp" alt="">Настроение</button><button class="mchip tap"><img src="img/plus16.webp" alt="">Давление</button><button class="mchip tap"><img src="img/plus16.webp" alt="">Активность</button></div>
+                </div>
+                <div class="mc">
+                  <div class="pat"><div class="pat-l"><div class="ava"><img src="img/avatar2.webp" alt="" style="inset:0;width:100%;height:100%"></div><div class="pat-n"><b>Сереженька</b><span>7 месяцев</span></div></div><img class="chev" src="img/chev24b.webp" alt=""></div>
+                  <div class="li"><div class="li-r"><span class="ic"><img src="img/diary24.webp" alt="" style="top:-8.33%;left:0;width:125%;height:108.33%"></span><span class="li-t">Дневники</span><img class="chev" src="img/chev24c.webp" alt=""></div><div class="li-d"></div></div>
+                  <div class="mchips"><button class="mchip tap"><img src="img/plus16.webp" alt="">Развитие</button></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="blk" id="symp" style="padding-bottom:8px">
+              <div style="display:flex;flex-direction:column;gap:8px"><p class="h22" id="sympTitle">С чем часто помогают наши<br>врачи онлайн</p><p class="lead16" id="sympLead" style="width:343px">Посмотрите, с какими симптомами<br>и заболеваниями можно обратиться<br>к нашим врачам онлайн.</p></div>
+              <div class="tabs" style="height:auto" data-chips><button class="chip tap" aria-pressed="true"><img src="img/patient16.webp" alt="">Взрослым</button><button class="chip tap" aria-pressed="false"><img src="img/kid16.webp" alt="">Детям</button></div>
+              <div class="grid4" id="sympGrid"></div>
+              <button class="more tap" data-toast="Откроется список всех симптомов">Посмотреть все<img src="img/chev24v.webp" alt=""></button>
+            </section>
+
+            <section class="blk pad20">
+              <div class="promo">
+                <div class="tx"><b>Дарите близким здоровье</b><span>Подарите родным и друзьям<br>подписку на безлимитное<br>общение с врачами в чате</span></div>
+                <button class="lk tap" data-toast="Откроется покупка подарочной карты">Купить подарочную карту</button>
+                <div class="ill"><img src="img/gift_intersect.webp" alt="" style="inset:0;width:100%;height:100%"></div>
+              </div>
+            </section>
+
+            <section class="blk pad20">
+              <div class="banner tap" role="button" tabindex="0" data-toast="Откроется реферальная программа">
+                <div style="position:absolute;left:233px;top:0;width:110px;height:82px"><img src="img/banner_ill.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%">
+                </div>
+                <p class="bn-t">Пригласи друзей и получи<br>по <em>550 ₽</em> за каждого!</p>
+                <span class="bn-b">Подробнее<span><img src="img/bn_v10.webp" alt=""></span></span>
+              </div>
+            </section>
+
+            <section class="blk" style="gap:8px">
+              <div class="h22row"><p class="h">Частые вопросы</p><img src="img/faq_chev.webp" alt=""></div>
+              <div class="faq" id="faq"></div>
+            </section>
+
+            <section class="blk">
+              <div style="display:flex;flex-direction:column;gap:8px"><p class="h22" style="color:#0d0d0d"><span style="color:#7d3bee">Скидка </span>на онлайн-консультации</p><p class="lead16" style="width:343px;color:#5d5e63">Получайте баллы НаПоправку и обменивайте их на скидки для подписки или консультаций врача</p></div>
+              <div class="cert">
+                <div class="cert-h">У вас пока нет скидки 😢</div>
+                <div class="cert-b">Скидка будет доступна от 500 накопленных баллов.  1 балл = 1 ₽.</div>
+                <button class="cert-f tap" data-toast="Откроются правила начисления баллов"><img src="img/coin24.webp" alt="">Как получить скидку?</button>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="tabbar" id="tabbar">
+          <div class="glass"><img src="img/tabbar_glass.webp" alt="">
+            <button class="hit" style="left:4px;width:68px" aria-label="Главная" data-toast="Главная"></button>
+            <button class="hit" style="left:68px;width:72px" aria-label="Мои записи" data-toast="Мои записи"></button>
+            <button class="hit" style="left:136px;width:86px" aria-label="Онлайн-консультации" data-top></button>
+            <button class="hit" style="left:214px;width:76px" aria-label="Трекер здоровья" data-toast="Трекер здоровья"></button>
+            <button class="hit" style="left:282px;width:74px" aria-label="Профиль" data-toast="Профиль"></button>
+          </div>
+        </div>
+        <button class="stick" id="stick" tabindex="-1" aria-hidden="true" data-toast="Откроется новый чат с врачом"><img src="img/chat20w.webp" alt="">Начать чат<img class="chv" src="img/chev24w.webp" alt=""></button>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+    </div></div>
+    <div class="cap" id="cap"></div>
+  </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
