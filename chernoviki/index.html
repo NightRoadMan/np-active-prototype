@@ -441,6 +441,9 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .dsh-b button{height:56px}
 .dsh-no{background:none;color:#7d3bee}
 
+/* 11 нояб.: кнопка в две строки без иконки */
+.nd-btn{font:500 16px/16px var(--app-font);padding:0 24px;text-align:center}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -448,7 +451,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   <aside class="panel" aria-label="Сборка экрана">
     <div>
       <h1>Черновики: новая карточка</h1>
-      <p class="lead">Блок черновиков по макету Figma 73001:84657: черновики наверху экрана, над покупками. Новая карточка с корзиной, предиктом и кнопкой «Начать консультацию». Карточки листаются, корзина удаляет черновик.</p>
+      <p class="lead">Блок черновиков по макету Figma 73001:84657: черновики наверху экрана, над покупками. Новая карточка с корзиной, предиктом и кнопкой «Пройти опрос и начать консультацию». Карточки листаются, корзина удаляет черновик.</p>
     </div>
 
     <div class="grp" role="group" aria-labelledby="gv">
@@ -977,17 +980,17 @@ function drNew(list){
     <div class="nd-hd">
       <div class="nd-m"><p class="nd-d"><span>${r.d}</span><img src="${A.dot4}" alt=""><span class="who">${r.who}</span></p>
         <button type="button" class="nd-del" aria-label="Удалить черновик" data-del="${r.id}">${IC.trash}</button></div>
-      <div class="nd-tt"><b>${r.t}</b><span>${r.x}</span></div>
+      <div class="nd-tt"><b>${r.x}</b><span>${r.t}</span></div>
     </div>
     <div class="nd-pr ${pk}">${pk==="g" ? IC.flash : IC.chat16}<span>${PRED[pk]}</span></div>
-    <button type="button" class="nd-btn tap" data-toast="${TOAST_OPEN}">${IC.chat20}Начать консультацию</button>
+    <button type="button" class="nd-btn tap" data-toast="${TOAST_OPEN}">Пройти опрос и начать консультацию</button>
   </div>`; }).join("")}</div>`;
 }
 function drOld(list){
   return `<div class="hcar" id="drfCar">${list.map(r => `<div class="drf" data-id="${r.id}">
   <div class="drf-top">
     <p class="drf-d">${r.d} <img src="${A.dot4}" alt=""><span>${r.until}</span></p>
-    <div class="drf-tt"><b>${r.t}</b><span>${r.x}</span></div>
+    <div class="drf-tt"><b>${r.x}</b><span>${r.t}</span></div>
   </div>
   <div>
     <div class="drf-li"><div class="drf-r"><img src="${A.dProfile}" alt=""><span class="t"><b>Пациент</b></span><span class="drf-tag">${r.p}</span></div><div class="drf-dv"></div></div>
